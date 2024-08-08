@@ -2,6 +2,10 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 
 
+def register_view(request):
+    return render(request, template_name='account_app/register.html')
+
+
 def login_view(request):
     if not request.user.is_authenticated:   # can use .is_anonymous instead .is_authenticated.
         if request.method == 'POST':

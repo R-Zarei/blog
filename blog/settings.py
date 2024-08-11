@@ -37,10 +37,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     # my_apps
     'home_app.apps.HomeAppConfig',
     'account_app.apps.AccountAppConfig',
     'blog_app.apps.BlogAppConfig',
+
+    # django cleanup
+    'django_cleanup.apps.CleanupConfig',
 ]
 
 MIDDLEWARE = [

@@ -115,7 +115,7 @@
                                             <span style="margin-right: 15px">{{ cat.title }}</span>
                                         {% endfor %}
                                     </div>
-                                    <a href="post-details.html"><h4>{{ post.title }}</h4></a>
+                                    <a href="{% url 'blog:post_details' post.id %}"><h4>{{ post.title }}</h4></a>
                                     <ul class="post-info">
                                         <li><a href="#">{{ post.author }}</a></li>
                                         <li><a href="#">{{ post.created }}</a></li>

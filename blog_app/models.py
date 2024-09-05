@@ -37,4 +37,4 @@ class Post(models.Model):
         return reverse('blog:post_details', kwargs={'pk': self.pk})
 
     def __str__(self):
-        return self.title
+        return f'{self.pk}. {self.title}'

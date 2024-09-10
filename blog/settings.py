@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-^pj)6(5$2%n6rdwv466l2=0p)i012z!$7*oywza^&!15hflo@!
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -43,8 +43,11 @@ INSTALLED_APPS = [
     'account_app.apps.AccountAppConfig',
     'blog_app.apps.BlogAppConfig',
 
-    # django cleanup
+    # django_cleanup
     'django_cleanup.apps.CleanupConfig',
+
+    # django_social_share
+    'django_social_share',
 ]
 
 MIDDLEWARE = [

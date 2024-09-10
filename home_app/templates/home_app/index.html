@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load social_share %}
 
 {% block title %}
     Home
@@ -96,8 +97,8 @@
                                                     <div class="col-6">
                                                         <ul class="post-share">
                                                             <li><i class="fa fa-share-alt"></i></li>
-                                                            <li><a href="#">Facebook</a>,</li>
-                                                            <li><a href="#"> Twitter</a></li>
+                                                            <li>{% post_to_telegram "new post" post.get_absolute_url "Telegram" %}</li>
+                                                            <li>Twitter</li>
                                                         </ul>
                                                     </div>
                                                 </div>

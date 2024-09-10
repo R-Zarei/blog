@@ -33,6 +33,9 @@ class Post(models.Model):
 
     objects = ModelManager()
 
+    class Meta:
+        ordering = ('created',)
+
     def get_absolute_url(self):
         return reverse('blog:post_details', kwargs={'pk': self.pk})
 

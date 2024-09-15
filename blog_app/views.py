@@ -35,3 +35,12 @@ def category_details(request, pk):
     objects_list = paginator.get_page(page_number)
 
     return render(request, 'blog_app/category_details.html', {'posts': objects_list, 'category': category})
+
+
+def search_posts(request):
+    posts = Post.objects.filter(title__icontains=request.GET.get('q'))
+    page_number = request.GET.get('page')
+    paginator = Paginator(posts, 1)
+    objects_list = paginator.get_page(page_number)
+
+    return render(request, 'blog_app/posts_list.html', {'posts': objects_list})

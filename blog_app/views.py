@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Post, Category, Comment
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from .forms import MessageForm
 
 
 def post_details(request, pk):
@@ -44,3 +45,14 @@ def search_posts(request):
     objects_list = paginator.get_page(page_number)
 
     return render(request, 'blog_app/posts_list.html', {'posts': objects_list})
+
+
+def contact_us(request):
+    if request.method == 'POST':
+        form = MessageForm(request.POST)
+        if form.is_valid():
+            form.save()
+    else:
+        form = MessageForm()
+
+    return render(request, 'blog_app/contact_us.html', {'form': form})

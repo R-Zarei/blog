@@ -53,3 +53,14 @@ class Comment(models.Model):
 
     def __str__(self):
         return f'{self.post}. {self.user}. {self.body[:50]}'
+
+
+class Message(models.Model):
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    title = models.CharField(max_length=100)
+    body = models.TextField()
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title

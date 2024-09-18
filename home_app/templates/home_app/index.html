@@ -26,7 +26,7 @@
                                 <ul class="post-info">
                                     <li><a href="#">{{ post.author }}</a></li>
                                     <li><a href="#">{{ post.created }}</a></li>
-                                    <li><a href="#">12 Comments</a></li>
+                                    <li><a href="#">{{ post.comments.count }} Comments</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -82,7 +82,7 @@
                                             <ul class="post-info">
                                                 <li><a href="#">{{ post.author }}</a></li>
                                                 <li><a href="#">{{ post.created }}</a></li>
-                                                <li><a href="#">12 Comments</a></li>
+                                                <li><a href="#">{{ post.comments.count }} Comments</a></li>
                                             </ul>
                                             <p>{{ post.body|slice:':200' }} ...</p>
                                             <div class="post-options">

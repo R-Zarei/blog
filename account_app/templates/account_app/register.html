@@ -44,29 +44,24 @@
 						Sign Up
 					</span>
 
-                    {% if errors %}
-                        {% for error in errors %}
-                            <div class="txt1" style="color: #c80000; margin: 10px 0">{{ error }}</div>
-                        {% endfor %}
-                    {% endif %}
-
+                    <div class="txt1" style="color: #c80000; margin: 10px 0">{{ form.non_field_errors }}</div>
 					<div class="wrap-input100 validate-input" data-validate = "Enter username">
-						<input class="input100" type="text" name="username" placeholder="Username">
+                        {{ form.username }}
 						<span class="focus-input100" data-placeholder="&#xf207;"></span>
 					</div>
 
                     <div class="wrap-input100 validate-input" data-validate = "Enter email address">
-						<input class="input100" type="email" name="email" placeholder="Email">
+                        {{ form.email }}
 						<span class="focus-input100" data-placeholder="&#x2709;"></span>
 					</div>
 
 					<div class="wrap-input100 validate-input" data-validate="Enter password">
-						<input class="input100" type="password" name="password" placeholder="Password">
+                        {{ form.password }}
 						<span class="focus-input100" data-placeholder="&#xf191;"></span>
 					</div>
 
                     <div class="wrap-input100 validate-input" data-validate="Enter password">
-						<input class="input100" type="password" name="password2" placeholder="Confirm Password">
+                        {{ form.password2 }}
 						<span class="focus-input100" data-placeholder="&#xf191;"></span>
 					</div>
 

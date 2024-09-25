@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load social_share %}
+{% load filters %}
 
 {% block title %}
     Home
@@ -71,7 +72,7 @@
                                 <div class="col-lg-12">
                                     <div class="blog-post">
                                         <div class="blog-thumb">
-                                            <img src="{{ post.image.url }}" alt="">
+                                            <img src="{{ post.image.url }}" alt="post_image">
                                         </div>
                                         <div class="down-content">
                                             {% for cat in post.category.all %}
@@ -84,7 +85,7 @@
                                                 <li><a href="#">{{ post.created }}</a></li>
                                                 <li><a href="#">{{ post.comments.count }} Comments</a></li>
                                             </ul>
-                                            <p>{{ post.body|slice:':200' }} ...</p>
+                                            <p>{{ post.body|my_cut:200 }} ...</p> <!--can use |slice:':200'-->
                                             <div class="post-options">
                                                 <div class="row">
                                                     <div class="col-6">

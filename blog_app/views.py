@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from .models import Post, Category, Comment
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .forms import MessageForm
+from django.views.generic import DetailView
 
 
 def post_details(request, pk):
@@ -56,3 +57,18 @@ def contact_us(request):
         form = MessageForm()
 
     return render(request, 'blog_app/contact_us.html', {'form': form})
+
+
+class PostDetailView(DetailView):
+    model = Post
+    template_name = 'blog_app/post_details.html'   # default is model(post)_detail .
+    # context_object_name = 'post'   # default is model_name(post).
+    # slug_field = 'post_slug_field'   # default is "slug". is for slug filed name in model.
+    # slug_url_kwarg = 'slug_item'   # default is "slug". in url.
+    # pk_url_kwarg = 'pk'
+    queryset = Post.objects.filter(published= True)   # send filtered objects.
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['name'] = "reza"
+        return context

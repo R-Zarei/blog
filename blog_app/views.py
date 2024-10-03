@@ -1,8 +1,9 @@
 from django.shortcuts import render, get_object_or_404
-from .models import Post, Category, Comment
+from .models import Post, Category, Comment, Message
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .forms import MessageForm
-from django.views.generic import DetailView
+from django.views.generic import DetailView, ListView, FormView
+from django.urls import reverse, reverse_lazy
 
 
 def post_details(request, pk):
@@ -66,9 +67,27 @@ class PostDetailView(DetailView):
     # slug_field = 'post_slug_field'   # default is "slug". is for slug filed name in model.
     # slug_url_kwarg = 'slug_item'   # default is "slug". in url.
     # pk_url_kwarg = 'pk'
-    queryset = Post.objects.filter(published= True)   # send filtered objects.
+    queryset = Post.objects.filter(published=True)   # send filtered objects.
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['name'] = "reza"
         return context
+
+
+class PostListView(ListView):
+    model = Post
+    template_name = 'blog_app/posts_list.html'   # default is model name_list (post_list).
+    context_object_name = 'posts'
+    paginate_by = 2   # most use "page_obj" in template for pagination.
+
+
+class ContactUsView(FormView):
+    template_name = 'blog_app/contact_us.html'
+    form_class = MessageForm
+    success_url = reverse_lazy('home_app:home')   # if we use reverse, we get error.
+
+    def form_valid(self, form):
+        form_data = form.cleaned_data
+        Message.objects.create(**form_data)   # or create(title=form_data['title'], body= ...).
+        return super().form_valid(form)

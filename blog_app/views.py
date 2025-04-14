@@ -1,20 +1,40 @@
-from django.shortcuts import render, get_object_or_404
-from .models import Post, Category, Comment, Message
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import Post, Category, Comment, Message, Like
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .forms import MessageForm
 from django.views.generic import DetailView, ListView, FormView, CreateView
 from django.urls import reverse, reverse_lazy
-from .mixins import CustomLoginRequiredMixin   # custom mixin
+from .mixins import CustomLoginRequiredMixin  # custom mixin
+from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
+from django.forms.models import model_to_dict
 
 
-def post_details(request, pk):
-    post = get_object_or_404(Post, pk=pk)
+def post_details(request, slug):
+    post = get_object_or_404(Post, slug=slug)
+    if request.user.is_authenticated:   # if user is logged in send user liked status else send False.
+        is_liked = request.user.likes.filter(post_id=post.id).exists()
+    else:
+        is_liked = False
     if request.method == 'POST':
         parent_id = request.POST.get('parent_id')
         body = request.POST.get('body')
-        Comment.objects.create(post=post, user=request.user, body=body, parent_id=parent_id)
+        comment = Comment.objects.create(post=post, user=request.user, body=body, parent_id=parent_id)
+        # object_dict = model_to_dict(comment)
+        if comment.user.profile.image:
+            user_image = comment.user.profile.image.url
+        else:
+            user_image = None
+        data = {
+            'id': comment.id,
+            'date': comment.created,
+            'user_name': comment.user.username,
+            'user_img_url': user_image,
+            'body': body,
+        }
+        return JsonResponse(data)
 
-    return render(request, 'blog_app/post_details.html', {'post': post})
+    return render(request, 'blog_app/post_details.html', {'post': post, 'is_liked': is_liked})
 
 
 def post_list(request):
@@ -59,6 +79,17 @@ def contact_us(request):
         form = MessageForm()
 
     return render(request, 'blog_app/contact_us.html', {'form': form})
+
+
+@login_required
+def like_post(request, slug, pk):
+    try:
+        like = Like.objects.get(post__slug=slug, user_id=request.user.id)
+        like.delete()
+        return JsonResponse({'status': 'unliked', 'like_num': Post.objects.get(slug=slug).likes.count()})
+    except:
+        Like.objects.create(post_id=pk, user_id=request.user.id)
+        return JsonResponse({'status': 'liked', 'like_num': Post.objects.get(slug=slug).likes.count()})
 
 
 # ---- Class base views ----

@@ -29,7 +29,7 @@
                             <a class="nav-link" href="{% url 'account_app:logout' %}" style="color: #ffffff">Logout</a>
                             <!--</li>
                             <li class="nav-item">-->
-                            <a class="nav-link" href="{% url 'account_app:profile' %}"
+                            <a class="nav-link {% if request.path == "/profile/" %}active{% endif %}" href="{% url 'account_app:profile' %}"
                                style="background-color: #f7f7f7">{{ request.user.username }}</a>
                         </li>
                         {% if user.profile.image %}

@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.utils import timezone
+from django.utils import timezone, text
 from django.urls import reverse
 from django.utils.html import format_html
 
@@ -35,6 +35,7 @@ class Post(models.Model):
     created = models.DateField(auto_now_add=True, verbose_name='تاریخ ایجاد')
     updated = models.DateField(auto_now=True)
     pub_date = models.DateField(default=timezone.now())
+    slug = models.SlugField(unique=True, null=True, blank=True)
 
     objects = ModelManager()
 
@@ -43,8 +44,12 @@ class Post(models.Model):
         verbose_name = 'پوست'
         verbose_name_plural = 'پوست ها'
 
+    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+        self.slug = text.slugify(self.title)
+        super(Post, self).save()
+
     def get_absolute_url(self):
-        return reverse('blog:post_details', kwargs={'pk': self.pk})
+        return reverse('blog:post_details', kwargs={'slug': self.slug})
 
     def show_image(self):
         return format_html(f'<img src="{self.image.url}" width="12%" alt="تصویر ندارد"/>')
@@ -83,3 +88,19 @@ class Message(models.Model):
     class Meta:
         verbose_name = 'پیام'
         verbose_name_plural = 'پیام ها'
+
+
+class Like(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='likes')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='likes')
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.pk}. {self.post}-{self.user.username}'
+
+    class Meta:
+        verbose_name = 'لایک'
+        verbose_name_plural = 'لایک ها'
+
+    def get_absolute_url(self):
+        return reverse('blog:like_post', kwargs={'slug': self.post})

@@ -22,3 +22,4 @@ class PostAdmin(admin.ModelAdmin):
 admin.site.register(models.Category)
 admin.site.register(models.Comment)
 admin.site.register(models.Message)
+admin.site.register(models.Like)

@@ -75,11 +75,21 @@
                                             <div class="row">
                                                 <div class="col-6">
                                                     <ul class="post-tags">
+                                                        <li><i
+                                                                id="like"
+                                                                style="font-size: 18px"
+                                                                class="fa fa-heart{% if not is_liked %}-o{% endif %}"></i>
+                                                        </li>
+                                                        <li id="likeNum">{{ post.likes.count }}</li>
+                                                    </ul>
+                                                </div>
+                                                <!--<div class="col-6">
+                                                    <ul class="post-tags">
                                                         <li><i class="fa fa-tags"></i></li>
                                                         <li><a href="#">Best Templates</a>,</li>
                                                         <li><a href="#">TemplateMo</a></li>
                                                     </ul>
-                                                </div>
+                                                </div>-->
                                                 <div class="col-6">
                                                     <ul class="post-share">
                                                         <li><i class="fa fa-share-alt"></i></li>
@@ -98,10 +108,10 @@
                                         <h2>{{ post.comments.count }} comments</h2>
                                     </div>
                                     <div class="content">
-                                        <ul>
+                                        <ul id="comment-block">
                                             {% for comment in post.comments.all %}
                                                 {% if comment.parent == None %}
-                                                    <li style="display: table">
+                                                    <li style="display: table" name="{{ comment.id }}">
                                                         <div class="author-thumb">
                                                             {% if comment.user.profile.image %}
                                                                 <img src="{{ comment.user.profile.image.url }}"
@@ -122,7 +132,7 @@
                                                         </div>
                                                     </li>
                                                     {% for reply in comment.replies.all %}
-                                                        <li class="replied" style="display: table">
+                                                        <li class="replied" style="display: table" name="{{ reply.parent.id }}">
                                                             <div class="author-thumb">
                                                                 {% if reply.user.profile.image %}
                                                                     <img src="{{ reply.user.profile.image.url }}"
@@ -165,7 +175,7 @@
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <fieldset>
-                                                            <button type="submit" id="form-submit" class="main-button">
+                                                            <button type="button" id="form-submit" class="main-button">
                                                                 Submit
                                                             </button>
                                                         </fieldset>
@@ -200,4 +210,11 @@
             window.location.href = "#body"
         }
     </script>
+    <input type="hidden" id="postSlug" value="{{ post.slug }}">
+    <input type="hidden" id="postPk" value="{{ post.pk }}">
+    <input type="hidden" id="commentUrl" value="{% url 'blog:post_details' post.slug %}">
+    <input type="hidden" id="csrfToken" value="{{ csrf_token }}">
+    <input type="hidden" id="userImg" value="{% static 'icon/profile.png' %}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{% static 'js/ajax.js' %}"></script>
 {% endblock %}

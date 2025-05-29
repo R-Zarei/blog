@@ -8,6 +8,7 @@ from .mixins import CustomLoginRequiredMixin  # custom mixin
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.forms.models import model_to_dict
+from django.utils.html import escape
 
 
 def post_details(request, slug):
@@ -30,7 +31,7 @@ def post_details(request, slug):
             'date': comment.created,
             'user_name': comment.user.username,
             'user_img_url': user_image,
-            'body': body,
+            'body': escape(body)
         }
         return JsonResponse(data)
 

@@ -14,8 +14,8 @@
                             <span class="sr-only">(current)</span>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="about.html">About Us</a>
+                    <li class="nav-item {% if request.path == "/about/" %}active{% endif %}">
+                        <a class="nav-link" href="{% url 'home_app:about' %}">About Us</a>
                     </li>
                     <li class="nav-item {% if request.path == "/posts/" %}active{% endif %}">
                         <a class="nav-link" href="{% url 'blog:posts' %}">Blog Entries</a>

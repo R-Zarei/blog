@@ -29,8 +29,8 @@ $(document).ready(function () {
             data: {
                 'body': body,
                 'parent_id': parentId,
-                'csrfmiddlewaretoken': csrfToken
             },
+            headers: {"X-CSRFToken": csrfToken},
             success: function (response) {
                 // select user image url.
                 if (response.user_img_url) {
@@ -48,7 +48,7 @@ $(document).ready(function () {
                     '<div class="right-content">' +
                     '<h4>' + response.user_name + '<span>' + response.date + '</span></h4>' +
                     '<p>' + response.body + '</p>' +
-                    '<button onClick="is_reply(' + parentId + ')" style=" font-weight: bold ; font-size: 13px;  background: transparent; border: none; color: #f48840">Reply\n</button>' +
+                    '<button onClick="is_reply(' + response.id + ')" style=" font-weight: bold ; font-size: 13px;  background: transparent; border: none; color: #f48840">Reply\n</button>' +
                     '</div>' +
                     '</li>';
                 var newReply = '<li class="replied" style="display: table" name="' + parentId + '">' +
